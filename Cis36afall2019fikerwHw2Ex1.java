@@ -1,9 +1,9 @@
 
 /*
- * Program name: Cis36aFall2019FikerWHw2Ex1.java
- * Discussion:   Hw #2, Ex #1
- * Written by: 	 Fiker Workene
- * Date:		 2019/09/17
+ * Program name:  Cis36aFall2019FikerWHw2Ex1.java
+ * Discussion:    Hw #2, Ex #1
+ * Written by: 	  Fiker Workene
+ * Date:          2019/09/17
  */
 
 import java.util.*;
