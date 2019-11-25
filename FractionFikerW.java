@@ -1,11 +1,9 @@
 /*
  * Program Name: FractionFikerW.java
- * Discussion:    Functions
+ * Discussion:   FractionFikerW class
  * Written By:   Fiker Workene
- * Date:         2019/10/24
+ * Date:         2019/11/14
  */
-
-import java.util.*;
 
 public class FractionFikerW 
 {
@@ -18,21 +16,41 @@ public class FractionFikerW
         denom = 1;
     }
     
+    public FractionFikerW(FractionFikerW fr) {
+        num = 0;
+        denom = 1;
+    }
+    
     public FractionFikerW(int n) {
         num = n < 0 ? -n : n;
         denom = 1;
     }
     
-    public FractionFikerW(int n, int d)
-    {
-        int gcd = gcdBF(n, d);
-        num = ((n / gcd) < 0 ? 
-                -(n / gcd) : (n / gcd));
+    public FractionFikerW(int n, int d) {
+        if ((n < 0 && d < 0) || (d < 0)) {
+            n = -n;
+            d = -d;
+        }
         if (n == 0)
-            denom = 1;
+            denom = 1;            
         else
-            denom = ((d / gcd) < 0 ? 
-                    -(d / gcd) : (d / gcd));
+            denom = d /gcdBF(n,d) ; 
+        num = n / gcdBF(n, d);
+    }
+    
+    public void update(int delta) {
+        num = num + (denom * delta);
+    }
+    
+    public void update() {
+        num = -num;
+    }
+    
+    public void update(FractionFikerW fr) {
+        int temp1 = (num * fr.denom) + (denom * fr.num);
+        int temp2 = denom * fr.denom;
+        num = temp1 / gcdBF(temp1, temp2); 
+        denom = temp2 / gcdBF(temp1, temp2);
     }
     
     public int getNum() 
@@ -47,10 +65,10 @@ public class FractionFikerW
     
     public void setNum(int n) 
     {
-    	int gcd = gcdBF(n, denom);
+        int gcf = gcdBF(n, denom);
         
-        num = n / gcd < 0 ? -n / gcd : n / gcd;
-        denom /= gcd;
+        num = n / gcf < 0 ? -n / gcf : n / gcf;
+        denom /= gcf;
     }
     
     public void setDenom(int d) 
@@ -61,17 +79,9 @@ public class FractionFikerW
         num /= gcd;
     }
     
-    public void update(int n, int d)
+    public double toDouble()
     {
-        if ((n < 0 && d < 0) || (d < 0)) {
-            n = -n;
-            d = -d;
-        }
-        if (n == 0)
-            denom = 1;            
-        else
-            denom = d / gcdBF(n,d) ; 
-        num = n / gcdBF(n, d); 
+        return num / denom;
     }
     
     public void print()
@@ -91,7 +101,7 @@ public class FractionFikerW
             d = -d;
         
         for (int i = 1; i <= n && i <= d; i++)
-            if (n % i == 0 && d % i == 0)
+            if(n % i == 0 && d % i == 0)
                 gcd = i;
         
         return gcd;
@@ -112,7 +122,7 @@ public class FractionFikerW
             deAryForNum[tmp % 10] = 1;
             
             tmp /= 10;
-        } while(tmp != 0);
+        } while(tmp != 10);
         
         tmp = (denom < 0) ? -denom : denom;
         do
@@ -120,7 +130,7 @@ public class FractionFikerW
             deAryForDenom[tmp % 10] = 1;
             
             tmp /= 10;
-        } while(tmp != 0);
+        } while(tmp != 10);
         
         size = 0;
         for (int i = 0; i < 10; i++)
@@ -146,32 +156,34 @@ public class FractionFikerW
         return ary;
     }
     
-       public FractionFikerW add(FractionFikerW fr)
+    public FractionFikerW add(FractionFikerW fr)
     {
         int resultNum = (this.num) * fr.denom + 
                 (fr.num) * denom;
         int resultDenom = this.denom * fr.denom;
-        return new FractionFikerW (resultNum, resultDenom);
+        return new FractionFikerW(resultNum, resultDenom);
     }
     
-      public FractionFikerW sub(FractionFikerW fr)
+    public FractionFikerW sub(FractionFikerW fr)
     {
         int resultNum = (this.num) * fr.denom - 
                 (fr.num) * denom;
         int resultDenom = this.denom * fr.denom;
-        return new FractionFikerW (resultNum, resultDenom);
+        return new FractionFikerW(resultNum, resultDenom);
     }
     
-     public FractionFikerW mul(FractionFikerW fr)
+    public FractionFikerW mul(FractionFikerW fr)
     {
         int resultNum = this.num * fr.num;
         int resultDenom = this.denom * fr.denom;
         return new FractionFikerW(resultNum, resultDenom);
     }
-     public FractionFikerW div(FractionFikerW fr)
+    
+    public FractionFikerW div(FractionFikerW fr)
     {
         int resultNum = this.num * fr.denom;
         int resultDenom = this.denom * fr.num;
         return new FractionFikerW(resultNum, resultDenom);
     }
+    
 }
